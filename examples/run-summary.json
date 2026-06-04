@@ -1,0 +1,56 @@
+{
+  "run_id": "weather-mvp-local-20260604-221500",
+  "workflow_name": "weather-mvp-local",
+  "dataset_id": "meteocat-weather",
+  "resource": "stations-metadata",
+  "status": "success",
+  "started_at": "2026-06-04T22:15:00.000000Z",
+  "finished_at": "2026-06-04T22:15:45.000000Z",
+  "steps": [
+    {
+      "step_name": "ingestion-sample",
+      "command": "odl-ingestion ingest --dataset meteocat-weather --mode sample --target local",
+      "return_code": 0,
+      "stdout": "Ingested 100 rows",
+      "stderr": "",
+      "status": "success"
+    },
+    {
+      "step_name": "landing-quality",
+      "command": "odl-quality check landing --dataset meteocat-weather --resource stations-metadata",
+      "return_code": 0,
+      "stdout": "Quality check passed",
+      "stderr": "",
+      "status": "success"
+    },
+    {
+      "step_name": "transformation",
+      "command": "odl-transformation transform --dataset meteocat-weather --resource stations-metadata",
+      "return_code": 0,
+      "stdout": "Transformed data",
+      "stderr": "",
+      "status": "success"
+    },
+    {
+      "step_name": "bronze-quality",
+      "command": "odl-quality check bronze --dataset meteocat-weather --resource stations-metadata",
+      "return_code": 0,
+      "stdout": "Quality check passed",
+      "stderr": "",
+      "status": "success"
+    },
+    {
+      "step_name": "run-summary",
+      "command": "odl-orchestration run weather-mvp-local",
+      "return_code": 0,
+      "stdout": "Generated summary",
+      "stderr": "",
+      "status": "success"
+    }
+  ],
+  "artifacts": [
+    "workspace/runs/weather-mvp-local-20260604-221500/landing/landing/weather/meteocat/meteocat-weather/ingestion_date=2026-06-04/sample.json",
+    "workspace/runs/weather-mvp-local-20260604-221500/bronze/bronze/weather/meteocat/stations-metadata/processing_date=2026-06-04/records.jsonl",
+    "workspace/runs/weather-mvp-local-20260604-221500/reports/run-summary.json"
+  ]
+}
