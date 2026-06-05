@@ -32,6 +32,25 @@ def test_health_failed_step():
     status, msg, failed = RunHealthValidator.validate(summary)
     assert status == "failure"
     assert len(failed) == 1
+    assert failed[0].command == "c1"
+
+def test_health_failed_step_list_command():
+    summary = RunSummary(
+        run_id="run-list",
+        workflow_name="wf",
+        dataset_id="ds",
+        resource="res",
+        status="failed",
+        started_at="2026-06-04T22:00:00Z",
+        steps=[
+            RunStep(step_name="s1", command=["c1", "--arg"], return_code=1, status="failed")
+        ]
+    )
+    status, msg, failed = RunHealthValidator.validate(summary)
+    assert status == "failure"
+    assert len(failed) == 1
+    assert failed[0].command == ["c1", "--arg"]
+    assert failed[0].command_as_text() == "c1 --arg"
 
 def test_health_no_steps():
     summary = RunSummary(

@@ -56,3 +56,40 @@ def test_markdown_report_writer(tmp_path):
     assert "# Observability Report - run-1" in content
     assert "## Summary" in content
     assert "## Metrics" in content
+
+def test_markdown_report_failed_steps(tmp_path):
+    from odl_observability.models.report import FailedStepSummary
+    metrics = WorkflowMetrics(
+        run_id="run-fail",
+        workflow_name="wf",
+        dataset_id="ds",
+        resource="res",
+        status="failed",
+        total_steps=1,
+        successful_steps=0,
+        failed_steps=1,
+        artifact_count=0
+    )
+    report = ObservabilityReport(
+        metrics=metrics,
+        health_status="failure",
+        health_message="Run has failed steps",
+        failed_steps=[
+            FailedStepSummary(
+                step_name="s1",
+                command=["cmd", "--error"],
+                return_code=1,
+                stderr="some error"
+            )
+        ]
+    )
+    
+    output_dir = tmp_path / "reports-fail"
+    report_path = MarkdownReportWriter.write(report, output_dir)
+    
+    content = report_path.read_text()
+    assert "## Failed Steps" in content
+    assert "### s1" in content
+    assert "**Command**: `cmd --error`" in content
+    assert "**Return Code**: 1" in content
+    assert "some error" in content

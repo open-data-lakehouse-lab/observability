@@ -7,8 +7,8 @@ class WorkflowMetricsCalculator:
     def calculate(run_summary: RunSummary) -> WorkflowMetrics:
         """Compute metrics from a RunSummary."""
         total_steps = len(run_summary.steps)
-        successful_steps = sum(1 for step in run_summary.steps if step.status == "success")
-        failed_steps = sum(1 for step in run_summary.steps if step.status == "failed")
+        successful_steps = sum(1 for step in run_summary.steps if step.status.lower() == "success")
+        failed_steps = sum(1 for step in run_summary.steps if step.status.lower() == "failed")
         
         duration = calculate_duration_seconds(run_summary.started_at, run_summary.finished_at)
         

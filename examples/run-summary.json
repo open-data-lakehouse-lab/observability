@@ -9,7 +9,16 @@
   "steps": [
     {
       "step_name": "ingestion-sample",
-      "command": "odl-ingestion ingest --dataset meteocat-weather --mode sample --target local",
+      "command": [
+        "odl-ingestion",
+        "ingest",
+        "--dataset",
+        "meteocat-weather",
+        "--mode",
+        "sample",
+        "--target",
+        "local"
+      ],
       "return_code": 0,
       "stdout": "Ingested 100 rows",
       "stderr": "",
@@ -17,7 +26,15 @@
     },
     {
       "step_name": "landing-quality",
-      "command": "odl-quality check landing --dataset meteocat-weather --resource stations-metadata",
+      "command": [
+        "odl-quality",
+        "check",
+        "landing",
+        "--dataset",
+        "meteocat-weather",
+        "--resource",
+        "stations-metadata"
+      ],
       "return_code": 0,
       "stdout": "Quality check passed",
       "stderr": "",
@@ -25,7 +42,14 @@
     },
     {
       "step_name": "transformation",
-      "command": "odl-transformation transform --dataset meteocat-weather --resource stations-metadata",
+      "command": [
+        "odl-transformation",
+        "transform",
+        "--dataset",
+        "meteocat-weather",
+        "--resource",
+        "stations-metadata"
+      ],
       "return_code": 0,
       "stdout": "Transformed data",
       "stderr": "",
@@ -33,7 +57,15 @@
     },
     {
       "step_name": "bronze-quality",
-      "command": "odl-quality check bronze --dataset meteocat-weather --resource stations-metadata",
+      "command": [
+        "odl-quality",
+        "check",
+        "bronze",
+        "--dataset",
+        "meteocat-weather",
+        "--resource",
+        "stations-metadata"
+      ],
       "return_code": 0,
       "stdout": "Quality check passed",
       "stderr": "",
@@ -41,7 +73,11 @@
     },
     {
       "step_name": "run-summary",
-      "command": "odl-orchestration run weather-mvp-local",
+      "command": [
+        "odl-orchestration",
+        "run",
+        "weather-mvp-local"
+      ],
       "return_code": 0,
       "stdout": "Generated summary",
       "stderr": "",

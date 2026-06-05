@@ -28,6 +28,32 @@ def test_cli_inspect_run(tmp_path):
     assert result.exit_code == 0
     assert "test-run" in result.stdout
 
+def test_cli_inspect_run_list_command(tmp_path):
+    summary_data = {
+        "run_id": "test-run-list",
+        "workflow_name": "test-workflow",
+        "dataset_id": "test-dataset",
+        "resource": "test-resource",
+        "status": "success",
+        "started_at": "2026-06-04T22:15:00Z",
+        "steps": [
+            {
+                "step_name": "s1",
+                "command": ["c1", "c2"],
+                "return_code": 0,
+                "status": "success"
+            }
+        ],
+        "artifacts": []
+    }
+    summary_file = tmp_path / "run-summary.json"
+    with open(summary_file, "w") as f:
+        json.dump(summary_data, f)
+        
+    result = runner.invoke(app, ["inspect", "run", "--run-summary-path", str(summary_file)])
+    assert result.exit_code == 0
+    assert "test-run-list" in result.stdout
+
 def test_cli_report_run(tmp_path):
     summary_data = {
         "run_id": "test-run",

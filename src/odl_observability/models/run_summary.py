@@ -1,13 +1,19 @@
+from __future__ import annotations
 from typing import Optional
 from pydantic import BaseModel, Field
 
 class RunStep(BaseModel):
     step_name: str
-    command: str
+    command: str | list[str]
     return_code: int
     stdout: Optional[str] = None
     stderr: Optional[str] = None
     status: str
+
+    def command_as_text(self) -> str:
+        if isinstance(self.command, list):
+            return " ".join(self.command)
+        return self.command
 
 class RunSummary(BaseModel):
     run_id: str
